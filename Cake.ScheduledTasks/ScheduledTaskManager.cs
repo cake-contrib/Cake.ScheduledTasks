@@ -1,71 +1,42 @@
-﻿/*
-The MIT License (MIT)
-
-Copyright (c) 2016 hawker-am
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
-*/
-
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using Cake.Core;
 using Cake.Core.Annotations;
 
-
 namespace Cake.ScheduledTasks
 {
-    public static class CakeScheduledTasks
+    public class ScheduledTaskManager
     {
-        [CakeMethodAlias]
-        public static void StartScheduledTask(this ICakeContext context, string taskName)
+        public static void StartScheduledTask(string taskName)
         {
             var output = RunScheduledTaskCommand("/Run /TN \"" + taskName + "\"");
 
-            if(output.Contains("SUCCESS"))
+            if (output.Contains("SUCCESS"))
                 Console.WriteLine(taskName + " has been started.");
             else
                 throw new Exception("Error starting scheduled task " + taskName);
         }
 
-        [CakeMethodAlias]
-        public static void StopScheduledTask(this ICakeContext context, string taskName)
+        public static void StopScheduledTask(string taskName)
         {
             var output = RunScheduledTaskCommand("/End /TN \"" + taskName + "\"");
 
-         
-            if(output.Contains("SUCCESS"))
+
+            if (output.Contains("SUCCESS"))
                 Console.WriteLine(taskName + " has been stopped.");
             else
                 Console.WriteLine("Error stopping scheduled task " + taskName);
         }
 
-        [CakeMethodAlias]
-        public static void SetScheduledTaskEnabled(this ICakeContext context, string taskName, bool enabled = true)
+       
+        public static void SetScheduledTaskEnabled(string taskName, bool enabled = true)
         {
             if (!enabled)
             {
                 var endOutput = RunScheduledTaskCommand("/End /TN \"" + taskName + "\"");
 
-                if(endOutput.Contains("SUCCESS"))
+                if (endOutput.Contains("SUCCESS"))
                     Console.WriteLine(taskName + " has been stopped");
                 else
                     throw new Exception("Error disabling scheduled task " + taskName);
@@ -73,16 +44,16 @@ namespace Cake.ScheduledTasks
 
             var output = RunScheduledTaskCommand("/Change /TN \"" + taskName + "\" /" + (enabled ? "ENABLE" : "DISABLE"));
 
-            if(output.Contains("SUCCESS"))
+            if (output.Contains("SUCCESS"))
                 Console.WriteLine(taskName + " has been " + (enabled ? "enabled" : "disabled") + ".");
             else
                 throw new Exception("Error " + (enabled ? "enabling" : "disabling") + " scheduled task" + taskName);
-                
+
         }
 
 
-        [CakeMethodAlias]
-        public static void StartScheduledTaskByFolder(this ICakeContext context, string folderName)
+       
+        public static void StartScheduledTaskByFolder(string folderName)
         {
             var tasks = GetScheduledTasksByFolder(folderName);
 
@@ -90,11 +61,11 @@ namespace Cake.ScheduledTasks
                 return;
 
             foreach (var task in tasks)
-                StartScheduledTask(context, task);
+                StartScheduledTask(task.Key);
         }
 
-        [CakeMethodAlias]
-        public static void StopScheduledTaskByFolder(this ICakeContext context, string folderName)
+       
+        public static void StopScheduledTaskByFolder(string folderName)
         {
             var tasks = GetScheduledTasksByFolder(folderName);
 
@@ -102,12 +73,10 @@ namespace Cake.ScheduledTasks
                 return;
 
             foreach (var task in tasks)
-                StopScheduledTask(context, task);
+                StopScheduledTask(task.Key);
         }
-
-
-        [CakeMethodAlias]
-        public static void SetScheduledTaskEnabledByFolder(this ICakeContext context, string folderName, bool enabled = true)
+        
+        public static void SetScheduledTaskEnabledByFolder(string folderName, bool enabled = true)
         {
             var tasks = GetScheduledTasksByFolder(folderName);
 
@@ -115,7 +84,7 @@ namespace Cake.ScheduledTasks
                 return;
 
             foreach (var task in tasks)
-                SetScheduledTaskEnabled(context, task, enabled);
+                SetScheduledTaskEnabled(task.Key, enabled);
         }
 
         private static string RunScheduledTaskCommand(string arguments)
@@ -141,19 +110,30 @@ namespace Cake.ScheduledTasks
             return output;
         }
 
-        private static List<string> GetScheduledTasksByFolder(string folderName)
+        private static Dictionary<string, bool> GetScheduledTasksByFolder(string folderName)
         {
             var output = RunScheduledTaskCommand("/query /fo list");
 
             var lines = output.Split('\n');
 
-            return (from line 
-                    in lines
-                    where line.Contains("TaskName:") && line.Contains(folderName)
-                    select line.Substring(10).Trim())
-                    .ToList();
+            var list = new Dictionary<string, bool>();
+
+            var lastTask = "";
+            foreach (var line in lines)
+            {
+                if (line.Contains("TaskName:") && line.Contains(folderName))
+                {
+                    lastTask = line.Substring(10).Trim();
+                    list.Add(lastTask, false);
+                }
+
+                if (line.Contains("Status") && line.Contains("Running") && lastTask != string.Empty)
+                    list[lastTask] = true;
+                else
+                    lastTask = string.Empty;
+
+            }
+            return list;
         }
     }
-
-
 }

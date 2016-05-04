@@ -50,8 +50,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CakeScheduledTasks.cs" />
+    <Compile Include="CakeAliases.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ScheduledTaskManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
