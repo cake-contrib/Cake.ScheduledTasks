@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Threading;
 
 namespace Cake.ScheduledTasks
 {
@@ -32,12 +33,20 @@ namespace Cake.ScheduledTasks
         {
             if (!enabled)
             {
-                var endOutput = RunScheduledTaskCommand("/End /TN \"" + taskName + "\"");
+                var tries = 0;
+                const int maximumTries = 30;
 
-                if (endOutput.Contains("SUCCESS"))
-                    Console.WriteLine(taskName + " has been stopped");
-                else
-                    throw new Exception("Error disabling scheduled task " + taskName);
+                // Wait for the scheduled task to finish, check once every second for 30 seconds
+                while (GetScheduledTaskStatus(taskName) && tries < maximumTries)
+                {
+                    ++tries;
+                    Thread.Sleep(1000);
+                }
+
+                if(tries == 30)
+                    throw new Exception("Error disabling scheduled task " + taskName + " - did not finish running within " + maximumTries + " seconds");
+                
+                Console.WriteLine(taskName + " has been stopped");
             }
 
             var output = RunScheduledTaskCommand("/Change /TN \"" + taskName + "\" /" + (enabled ? "ENABLE" : "DISABLE"));
@@ -132,6 +141,31 @@ namespace Cake.ScheduledTasks
 
             }
             return list;
+        }
+
+        private static bool GetScheduledTaskStatus(string taskName)
+        {
+            var output = RunScheduledTaskCommand("/query /tn \"" + taskName + "\" /fo list");
+
+            var lines = output.Split('\n');
+
+
+            var foundName = false;
+
+            foreach (var line in lines)
+            {
+                if (line.Contains("TaskName:") && line.Contains(taskName))
+                {
+                    foundName = true;
+                    continue;
+                }
+
+
+                if (line.Contains("Status") && line.Contains("Running") && foundName)
+                    return true;  
+            }
+
+            return false;
         }
     }
 }
