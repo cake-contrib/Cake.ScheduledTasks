@@ -6,12 +6,12 @@ using Cake.ScheduledTasks;
 namespace Cake.ScheduledTasks.Test
 {
     [TestFixture]
-    public class UnitTest1
+    public class TaskManagerTest
     {
         [Test]
         public void ShouldWaitForRunningTask()
         {
-            
+            ScheduledTaskManager.SetScheduledTaskEnabled(@"\Test\awdasdas", false);
         }
     }
 }
