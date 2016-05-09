@@ -9,6 +9,8 @@ namespace Cake.ScheduledTasks
     {
         public static void StartScheduledTask(string taskName)
         {
+            Console.WriteLine("Starting task " + taskName);
+
             var output = RunScheduledTaskCommand("/Run /TN \"" + taskName + "\"");
 
             if (output.Contains("SUCCESS"))
@@ -19,6 +21,8 @@ namespace Cake.ScheduledTasks
 
         public static void StopScheduledTask(string taskName)
         {
+            Console.WriteLine("Stopping task " + taskName);
+
             var output = RunScheduledTaskCommand("/End /TN \"" + taskName + "\"");
 
 
@@ -31,6 +35,8 @@ namespace Cake.ScheduledTasks
        
         public static void SetScheduledTaskEnabled(string taskName, bool enabled = true)
         {
+            Console.WriteLine((enabled ? "Enabling" : "Disabling") + " task " + taskName);
+
             if (!enabled)
             {
                 var tries = 0;
@@ -85,6 +91,8 @@ namespace Cake.ScheduledTasks
         
         public static void SetScheduledTaskEnabledByFolder(string folderName, bool enabled = true)
         {
+
+            Console.WriteLine((enabled ? "Enabling" : "Disabling") + " all tasks in folder " + folderName);
             var tasks = GetScheduledTasksByFolder(folderName);
 
             if (tasks.Count == 0)
