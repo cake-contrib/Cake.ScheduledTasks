@@ -3,9 +3,6 @@
 Windows task scheduler addin for Cake
 
 
-# Cake.ScheduledTasks
-
-
 ## CakeAliases
 
 Wrapper around ScheduledTaskManager
