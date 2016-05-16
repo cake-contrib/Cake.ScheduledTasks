@@ -30,6 +30,9 @@ using System.Threading;
 
 namespace Cake.ScheduledTasks
 {
+    /// <summary>
+    /// Exposes operations carried out on the Windows Task Scheduler
+    /// </summary>
     public class ScheduledTaskManager
     {
 
