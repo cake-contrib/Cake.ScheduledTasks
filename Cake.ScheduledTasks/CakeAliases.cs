@@ -26,9 +26,11 @@ SOFTWARE.
 using Cake.Core;
 using Cake.Core.Annotations;
 
-
 namespace Cake.ScheduledTasks
 {
+    /// <summary>
+    /// Wrapper around ScheduledTaskManager
+    /// </summary>
     public static class CakeAliases
     {
         [CakeMethodAlias]
