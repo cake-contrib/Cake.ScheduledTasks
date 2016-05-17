@@ -210,6 +210,14 @@ namespace Cake.ScheduledTasks
                     catch (Exception e)
                     {
                         Console.WriteLine("Error adding key: " + lastTask);
+
+                        foreach (var entry in list)
+                        {
+                            Console.WriteLine("Command output: ");
+                            Console.WriteLine(output);
+                            Console.WriteLine("------------------------------------");
+                            Console.WriteLine(string.Format("{0} : {1}", entry.Key, entry.Value));
+                        }
                         throw;
                     }
                     
