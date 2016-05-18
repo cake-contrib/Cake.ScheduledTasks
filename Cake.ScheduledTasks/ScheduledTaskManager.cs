@@ -205,19 +205,19 @@ namespace Cake.ScheduledTasks
 
                     try
                     {
-                        list.Add(lastTask, false);
+                        if(!list.ContainsKey(lastTask))
+                            list.Add(lastTask, false);
                     }
                     catch (Exception e)
                     {
                         Console.WriteLine("Error adding key: " + lastTask);
+                        Console.WriteLine("Command output: ");
+                        Console.WriteLine(output);
+                        Console.WriteLine("------------------------------------");
 
                         foreach (var entry in list)
-                        {
-                            Console.WriteLine("Command output: ");
-                            Console.WriteLine(output);
-                            Console.WriteLine("------------------------------------");
                             Console.WriteLine(string.Format("{0} : {1}", entry.Key, entry.Value));
-                        }
+                
                         throw;
                     }
                     
