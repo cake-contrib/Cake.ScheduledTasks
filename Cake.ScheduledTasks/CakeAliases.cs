@@ -34,42 +34,22 @@ namespace Cake.ScheduledTasks
     public static class CakeAliases
     {
         [CakeMethodAlias]
-        public static void StartScheduledTask(this ICakeContext context, string taskName)
-        {
-            ScheduledTaskManager.StartScheduledTask(taskName);
-        }
+        public static void StartScheduledTask(this ICakeContext context, string taskName) => ScheduledTaskManager.StartScheduledTask(taskName);
 
         [CakeMethodAlias]
-        public static void StopScheduledTask(this ICakeContext context, string taskName)
-        {
-            ScheduledTaskManager.StopScheduledTask(taskName);
-        }
+        public static void StopScheduledTask(this ICakeContext context, string taskName) => ScheduledTaskManager.StopScheduledTask(taskName);
 
         [CakeMethodAlias]
-        public static void SetScheduledTaskEnabled(this ICakeContext context, string taskName, bool enabled = true)
-        {
-           ScheduledTaskManager.SetScheduledTaskEnabled(taskName, enabled);
-                
-        }
+        public static void SetScheduledTaskEnabled(this ICakeContext context, string taskName, bool enabled = true) => ScheduledTaskManager.SetScheduledTaskEnabled(taskName, enabled);
 
         [CakeMethodAlias]
-        public static void StartScheduledTaskByFolder(this ICakeContext context, string folderName)
-        {
-            ScheduledTaskManager.StartScheduledTaskByFolder(folderName);
-        }
+        public static void StartScheduledTaskByFolder(this ICakeContext context, string folderName) => ScheduledTaskManager.StartScheduledTaskByFolder(folderName);
 
         [CakeMethodAlias]
-        public static void StopScheduledTaskByFolder(this ICakeContext context, string folderName)
-        {
-            ScheduledTaskManager.StopScheduledTaskByFolder(folderName);
-        }
-
+        public static void StopScheduledTaskByFolder(this ICakeContext context, string folderName) => ScheduledTaskManager.StopScheduledTaskByFolder(folderName);
 
         [CakeMethodAlias]
-        public static void SetScheduledTaskEnabledByFolder(this ICakeContext context, string folderName, bool enabled = true)
-        {
-            ScheduledTaskManager.SetScheduledTaskEnabledByFolder(folderName, enabled);
-        }
+        public static void SetScheduledTaskEnabledByFolder(this ICakeContext context, string folderName, bool enabled = true) => ScheduledTaskManager.SetScheduledTaskEnabledByFolder(folderName, enabled);
     }
 
 

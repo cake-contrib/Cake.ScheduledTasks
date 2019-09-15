@@ -1,6 +1,4 @@
 packages/
-Cake.ScheduledTasks/obj/
-Cake.ScheduledTasks/bin/
 .vs/
-Cake.ScheduledTasks.Test/obj/
-Cake.ScheduledTasks.Test/bin/
+obj/
+bin/

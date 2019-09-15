@@ -56,12 +56,6 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Cake.ScheduledTasks\Cake.ScheduledTasks.csproj">
-      <Project>{ffe5f83e-7b57-4a9c-8fe4-a762eb94e486}</Project>
-      <Name>Cake.ScheduledTasks</Name>
-    </ProjectReference>
-  </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
       <ItemGroup>

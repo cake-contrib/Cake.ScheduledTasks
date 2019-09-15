@@ -208,7 +208,7 @@ namespace Cake.ScheduledTasks
                         if(!list.ContainsKey(lastTask))
                             list.Add(lastTask, false);
                     }
-                    catch (Exception e)
+                    catch (Exception)
                     {
                         Console.WriteLine("Error adding key: " + lastTask);
                         Console.WriteLine("Command output: ");
