@@ -1,17 +1,15 @@
 
 # Cake.ScheduledTasks
-Windows task scheduler addin for Cake
 
+Windows task scheduler addin for Cake.
 
 ## CakeAliases
 
 Wrapper around ScheduledTaskManager
 
-
 ## ScheduledTaskManager
 
 Exposes operations carried out on the Windows Task Scheduler
-
 
 ### M:Cake.ScheduledTasks.GetScheduledTasksByFolder(folderName)
 
@@ -21,11 +19,9 @@ Returns a dictionary list of all scheduled tasks within a task folder
 | ---- | ----------- |
 | folderName | *System.String*<br>Name of the task folder |
 
-
 #### Returns
 
 Dictionary of task names and their corresponding status
-
 
 ### M:Cake.ScheduledTasks.GetScheduledTaskStatus(taskName)
 
@@ -35,11 +31,9 @@ Gets whether the specified task is running or not
 | ---- | ----------- |
 | taskName | *System.String*<br>Name of the scheduled task |
 
-
 #### Returns
 
 True if the task is running, false if it isn't
-
 
 ### M:Cake.ScheduledTasks.RunScheduledTaskCommand(arguments)
 
@@ -49,11 +43,7 @@ Function to run the windows schtasks command with the specified arguments
 | ---- | ----------- |
 | arguments | *System.String*<br>Arguments to run the command with |
 
-
 #### Returns
-
-
-
 
 ### M:Cake.ScheduledTasks.SetScheduledTaskEnabled(taskName, enabled)
 
